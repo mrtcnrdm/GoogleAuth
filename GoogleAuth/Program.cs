@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 
@@ -7,11 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.Configure<CookiePolicyOptions>(options =>
-//{
-//    options.CheckConsentNeeded = context => true;
-//    options.MinimumSameSitePolicy = SameSiteMode.None;
-//});
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -19,9 +13,8 @@ builder.Services.AddAuthentication(opt =>
     opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 }).AddCookie().AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
 {
-    options.ClientId = "778392543363-osrusdtdc6t4eantakl9shfs44k0epjb.apps.googleusercontent.com";
-    options.ClientSecret = "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";
-    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
 });
 
 
